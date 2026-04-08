@@ -25,7 +25,7 @@ const AFrameLogo = () => {
 
 const categories = [
   { id: 'pc', name: 'PC', img: '/images/pcset.jpg' },
-  { id: 'mouse', name: 'MOUSE', img: '/images/mousegaming_icon.jpg' },
+  { id: 'mouse', name: 'MOUSE', img: 'images/mousegamingicon.jpg' },
   { id: 'chair', name: 'CHAIR', img: '/images/gamingchairicon.jpg' },
   { id: 'headset', name: 'HEADSET', img: '/images/headsetgaming.jpg' },
   { id: 'keyboard', name: 'KEYBOARD', img: '/images/keyboardicon.jpg' },
