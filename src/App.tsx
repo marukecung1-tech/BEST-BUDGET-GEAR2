@@ -1,30 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Facebook, Twitter, Mail, Music2, MessageSquare, ShoppingBag } from 'lucide-react';
 
-// Import images
-import pcsetImg from './assets/images/pcset.jpg';
-import mousegamingIcon from './assets/images/mousegaming_icon.jpg';
-import gamingchairIcon from './assets/images/gamingchairicon.jpg';
-import headsetgamingImg from './assets/images/headsetgaming.jpg';
-import keyboardIcon from './assets/images/keyboardicon.jpg';
-import otherIcon from './assets/images/othericon.jpg';
-
-import best1Img from './assets/images/best1.jpg';
-import best2Img from './assets/images/best2.jpg';
-import best3Img from './assets/images/best3.jpg';
-import best4Img from './assets/images/best4.png';
-
-import mouseA9 from './assets/images/mouse/a9.png';
-import mouseF2 from './assets/images/mouse/f2.png';
-import mouseJupiter from './assets/images/mouse/jupiter.png';
-import mouseVT7MAX from './assets/images/mouse/VT7MAX.png';
-import mouseR5 from './assets/images/mouse/R5.png';
-import mouseMadR from './assets/images/mouse/madR.png';
-
-import pcsetupBg from './assets/images/pcsetup.jpg';
-import mousepageBg from './assets/images/mousepageBG.jpg';
-import keyboardBg from './assets/images/keyboardbg.png';
-
 // --- A-Frame Component ---
 const AFrameLogo = () => {
   return (
@@ -48,26 +24,26 @@ const AFrameLogo = () => {
 };
 
 const categories = [
-  { id: 'pc', name: 'PC', img: pcsetImg },
-  { id: 'mouse', name: 'MOUSE', img: mousegamingIcon },
-  { id: 'chair', name: 'CHAIR', img: gamingchairIcon },
-  { id: 'headset', name: 'HEADSET', img: headsetgamingImg },
-  { id: 'keyboard', name: 'KEYBOARD', img: keyboardIcon },
-  { id: 'other', name: 'OTHER', img: otherIcon },
+  { id: 'pc', name: 'PC', img: '/images/pcset.jpg' },
+  { id: 'mouse', name: 'MOUSE', img: '/images/mousegaming_icon.jpg' },
+  { id: 'chair', name: 'CHAIR', img: '/images/gamingchairicon.jpg' },
+  { id: 'headset', name: 'HEADSET', img: '/images/headsetgaming.jpg' },
+  { id: 'keyboard', name: 'KEYBOARD', img: '/images/keyboardicon.jpg' },
+  { id: 'other', name: 'OTHER', img: '/images/othericon.jpg' },
 ];
 
 const bestRightNow = [
-  { id: 'br1', img: best1Img },
-  { id: 'br2', img: best2Img },
-  { id: 'br3', img: best3Img },
-  { id: 'br4', img: best4Img },
+  { id: 'br1', img: '/images/best1.jpg' },
+  { id: 'br2', img: '/images/best2.jpg' },
+  { id: 'br3', img: '/images/best3.jpg' },
+  { id: 'br4', img: '/images/best4.png' },
 ];
 
 const mouseProducts = [
   { 
     id: 'm1', 
     name: 'ATK GEAR Dragonfly A9', 
-    img: mouseA9, 
+    img: '/images/mouse/a9.png', 
     price: 24.98,
     brand: 'ATK GEAR',
     brandLogo: 'ATK',
@@ -82,7 +58,7 @@ const mouseProducts = [
   { 
     id: 'm2', 
     name: 'VGN Dragonfly F2', 
-    img: mouseF2, 
+    img: '/images/mouse/f2.png', 
     price: 39.99,
     brand: 'VGN',
     brandLogo: 'VGN',
@@ -97,7 +73,7 @@ const mouseProducts = [
   { 
     id: 'm3', 
     name: 'KYSONA Jupiter', 
-    img: mouseJupiter, 
+    img: '/images/mouse/jupiter.png', 
     price: 45.00,
     brand: 'KYSONA',
     brandLogo: 'KYS',
@@ -112,7 +88,7 @@ const mouseProducts = [
   { 
     id: 'm4', 
     name: 'Rapoo VT7 MAX', 
-    img: mouseVT7MAX, 
+    img: '/images/mouse/VT7MAX.png', 
     price: 49.99,
     brand: 'Rapoo',
     brandLogo: 'RAP',
@@ -127,7 +103,7 @@ const mouseProducts = [
   { 
     id: 'm5', 
     name: 'Attack Shark R5', 
-    img: mouseR5, 
+    img: '/images/mouse/R5.png', 
     price: 49.00,
     brand: 'Attack Shark',
     brandLogo: 'ATS',
@@ -142,7 +118,7 @@ const mouseProducts = [
   { 
     id: 'm6', 
     name: 'VXE MAD R Series', 
-    img: mouseMadR, 
+    img: '/images/mouse/madR.png', 
     price: 35.99,
     brand: 'VXE',
     brandLogo: 'VXE',
@@ -162,7 +138,7 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
       {/* Hero */}
       <section className="h-[80vh] relative flex items-center p-12 overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-zinc-900">
-          <img src={pcsetupBg} alt="PC Setup" className="w-full h-full object-cover opacity-40 mix-blend-luminosity" />
+          <img src="/images/pcsetup.jpg" alt="PC Setup" className="w-full h-full object-cover opacity-40 mix-blend-luminosity" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         </div>
         
@@ -269,7 +245,7 @@ const CategoryView = ({ setSelectedProduct }: { setSelectedProduct: (p: any) => 
       {/* Hero */}
       <div className="h-[50vh] relative overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 bg-zinc-800">
-          <img src={mousepageBg} className="w-full h-full object-cover opacity-60 mix-blend-luminosity" />
+          <img src="/images/mousepageBG.jpg" className="w-full h-full object-cover opacity-60 mix-blend-luminosity" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent" />
         </div>
         <div className="absolute bottom-12 right-12">
@@ -327,7 +303,7 @@ const Footer = () => {
     <footer className="relative py-16 px-8 overflow-hidden border-t border-white/10 mt-auto">
       {/* Placeholder for Keyboard Background */}
       <div className="absolute inset-0 -z-20 bg-zinc-950">
-         <img src={keyboardBg} alt="Keyboard Background" className="w-full h-full object-cover opacity-20 mix-blend-luminosity" />
+         <img src="/images/keyboardbg.png" alt="Keyboard Background" className="w-full h-full object-cover opacity-20 mix-blend-luminosity" />
       </div>
       
       {/* Hexagon pattern overlay placeholder */}
