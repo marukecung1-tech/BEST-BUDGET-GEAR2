@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Facebook, Twitter, Mail, Music2, MessageSquare, ShoppingBag } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 // --- A-Frame Component ---
 const AFrameLogo = () => {
@@ -132,7 +133,416 @@ const mouseProducts = [
   },
 ];
 
-const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) => {
+const productsByCategory: Record<string, any[]> = {
+  mouse: mouseProducts,
+  pc: [
+    { 
+      id: 'pc1', 
+      name: 'Budget Build V1', 
+      img: '/images/pcset.jpg', 
+      price: 499.00,
+      brand: 'Custom PC',
+      brandLogo: 'PC',
+      brandColor: '#3b82f6',
+      fullName: 'THE ULTIMATE BUDGET 1080P GAMING PC',
+      description: 'Perfect entry-level build for esports and 1080p gaming.',
+      models: ['V1', 'V1 Pro'],
+      features: [{ title: 'Optimized Airflow', desc: 'Sleek case with 4 pre-installed ARGB fans.' }]
+    },
+    { 
+      id: 'pc2', 
+      name: 'Apex Striker', 
+      img: '/images/pcset.jpg', 
+      price: 649.00,
+      brand: 'CyberPower',
+      brandLogo: 'CP',
+      brandColor: '#ef4444',
+      fullName: 'CyberPower Apex Striker Series',
+      description: 'Dominating 1440p performance without the premium tax.',
+      models: ['Striker Base', 'Striker Advanced'],
+      features: [{ title: 'Liquid Cooled CPU', desc: 'Keep temps low even during intense matches.' }]
+    },
+    { 
+      id: 'pc3', 
+      name: 'Stealth Mini', 
+      img: '/images/pcsetup.jpg', 
+      price: 549.00,
+      brand: 'NZXT',
+      brandLogo: 'NX',
+      brandColor: '#8b5cf6',
+      fullName: 'NZXT Stealth Mini ITX Build',
+      description: 'Compact form factor, massive performance.',
+      models: ['Mini 1', 'Mini 2'],
+      features: [{ title: 'Space Saving', desc: 'Fits anywhere on your desk while delivering desktop-grade power.' }]
+    },
+    { 
+      id: 'pc4', 
+      name: 'Frostbite Rig', 
+      img: '/images/pcsetup.jpg', 
+      price: 799.00,
+      brand: 'Ironside',
+      brandLogo: 'IR',
+      brandColor: '#0ea5e9',
+      fullName: 'Ironside Frostbite All-White Build',
+      description: 'Aesthetic all-white build with impressive internal specs.',
+      models: ['Snow', 'Blizzard'],
+      features: [{ title: 'Aesthetic Focus', desc: 'All white components with subtle white LED lighting.' }]
+    },
+    { 
+      id: 'pc5', 
+      name: 'Esports Ready Pro', 
+      img: '/images/pcset.jpg', 
+      price: 699.00,
+      brand: 'Skytech',
+      brandLogo: 'SK',
+      brandColor: '#eab308',
+      fullName: 'Skytech Esports Ready Pro System',
+      description: 'Pushing 240Hz+ in competitive titles.',
+      models: ['Pro', 'Pro Max'],
+      features: [{ title: 'High Refresh Rate Ready', desc: 'Geared specifically to hit maximum frames at 1080p settings.' }]
+    },
+    { 
+      id: 'pc6', 
+      name: 'Creator Studio Core', 
+      img: '/images/pcsetup.jpg', 
+      price: 849.00,
+      brand: 'Dell',
+      brandLogo: 'DL',
+      brandColor: '#10b981',
+      fullName: 'Dell Creator Studio Core Generation',
+      description: 'Gaming performance doubled as a budget workstation.',
+      models: ['Core', 'Core Plus'],
+      features: [{ title: 'Multitasking King', desc: 'Upgraded RAM and storage for streaming and editing.' }]
+    }
+  ],
+  chair: [
+    { 
+      id: 'c1', 
+      name: 'ErgoChair Pro', 
+      img: '/images/gamingchairicon.jpg', 
+      price: 129.99,
+      brand: 'Ergo',
+      brandLogo: 'ER',
+      brandColor: '#eab308',
+      fullName: 'ErgoChair Pro Gaming Setup Edition',
+      description: 'Comfort for long sessions without breaking the bank.',
+      models: ['Standard', 'XL'],
+      features: [{ title: 'Lumbar Support', desc: 'Adjustable backrest and 3D armrests.' }]
+    },
+    { 
+      id: 'c2', 
+      name: 'Titan Stealth', 
+      img: '/images/gamingchairicon.jpg', 
+      price: 149.99,
+      brand: 'Secretlab (Refurb)',
+      brandLogo: 'SL',
+      brandColor: '#1a1a1a',
+      fullName: 'Secretlab Titan Stealth Refurbished',
+      description: 'Premium feel at a budget price via certified refurbishment.',
+      models: ['Titan'],
+      features: [{ title: 'Premium PU Leather', desc: 'Durable and highly resistant to peeling.' }]
+    },
+    { 
+      id: 'c3', 
+      name: 'Mesh Racer', 
+      img: '/images/gamingchairicon.jpg', 
+      price: 99.00,
+      brand: 'Respawn',
+      brandLogo: 'RS',
+      brandColor: '#ef4444',
+      fullName: 'Respawn Mesh Racer Breathable Chair',
+      description: 'Stay cool during the most heated moments of the match.',
+      models: ['Mesh 1', 'Mesh 2'],
+      features: [{ title: 'Breathable Mesh Back', desc: 'Maximum airflow to prevent sweating during long sessions.' }]
+    },
+    { 
+      id: 'c4', 
+      name: 'Cloud Nine Lounger', 
+      img: '/images/gamingchairicon.jpg', 
+      price: 189.00,
+      brand: 'GTRacing',
+      brandLogo: 'GT',
+      brandColor: '#3b82f6',
+      fullName: 'GTRacing Cloud Nine Footrest Edition',
+      description: 'Kick back and relax while watching streams or casual gaming.',
+      models: ['With Footrest', 'Without Footrest'],
+      features: [{ title: 'Extendable Footrest', desc: 'Built-in padded footrest for ultimate relaxation.' }]
+    },
+    { 
+      id: 'c5', 
+      name: 'Minimalist Task', 
+      img: '/images/gamingchairicon.jpg', 
+      price: 89.99,
+      brand: 'IKEA',
+      brandLogo: 'IK',
+      brandColor: '#f97316',
+      fullName: 'IKEA Minimalist Task Gaming Chair',
+      description: 'Sleek, unobtrusive design that blends into any room.',
+      models: ['Task 100', 'Task 200'],
+      features: [{ title: 'Sleek Profile', desc: 'Takes up minimal space while offering essential support.' }]
+    },
+    { 
+      id: 'c6', 
+      name: 'RGB Throne', 
+      img: '/images/gamingchairicon.jpg', 
+      price: 159.00,
+      brand: 'Homall',
+      brandLogo: 'HM',
+      brandColor: '#ec4899',
+      fullName: 'Homall RGB Throne Reactive Lighting Chair',
+      description: 'Sync your chair with your PC setup lighting.',
+      models: ['RGB Edition'],
+      features: [{ title: 'Edge-Lit RGB', desc: 'Customizable lighting bordering the entire chair.' }]
+    }
+  ],
+  headset: [
+    { 
+      id: 'h1', 
+      name: 'SonicWave 360', 
+      img: '/images/headsetgaming.jpg', 
+      price: 45.00,
+      brand: 'SonicWave',
+      brandLogo: 'SW',
+      brandColor: '#ef4444',
+      fullName: 'SonicWave 360 Surround Sound Headset',
+      description: 'Hear every footstep with crystal clear audio.',
+      models: ['Wired', 'Wireless'],
+      features: [{ title: '7.1 Surround', desc: 'Immersive spatial audio.' }]
+    },
+    { 
+      id: 'h2', 
+      name: 'Cloud Stinger Core', 
+      img: '/images/headsetgaming.jpg', 
+      price: 39.99,
+      brand: 'HyperX',
+      brandLogo: 'HX',
+      brandColor: '#dc2626',
+      fullName: 'HyperX Cloud Stinger Core Budget Headset',
+      description: 'Reliable comfort and essential audio quality from a trusted brand.',
+      models: ['Core', 'Core Wireless'],
+      features: [{ title: 'Lightweight Comfort', desc: 'Barely noticeable on your head for hours of play.' }]
+    },
+    { 
+      id: 'h3', 
+      name: 'BlackShark V2 X', 
+      img: '/images/headsetgaming.jpg', 
+      price: 49.00,
+      brand: 'Razer',
+      brandLogo: 'RZ',
+      brandColor: '#22c55e',
+      fullName: 'Razer BlackShark V2 X Esports Headset',
+      description: 'Incredible mic clarity and passive noise cancellation.',
+      models: ['V2 X'],
+      features: [{ title: 'HyperClear Mic', desc: 'Cardioid mic for focused voice pickup.' }]
+    },
+    { 
+      id: 'h4', 
+      name: 'Arctis Nova 1', 
+      img: '/images/headsetgaming.jpg', 
+      price: 59.99,
+      brand: 'SteelSeries',
+      brandLogo: 'SS',
+      brandColor: '#f97316',
+      fullName: 'SteelSeries Arctis Nova 1 Multi-System Headset',
+      description: 'Studio-quality audio translated for competitive gaming.',
+      models: ['Nova 1', 'Nova 3'],
+      features: [{ title: 'ComfortMAX System', desc: 'Adjustable elastic band for a perfect fit.' }]
+    },
+    { 
+      id: 'h5', 
+      name: 'HS50 Pro Stereo', 
+      img: '/images/headsetgaming.jpg', 
+      price: 44.99,
+      brand: 'Corsair',
+      brandLogo: 'CR',
+      brandColor: '#eab308',
+      fullName: 'Corsair HS50 Pro Stereo Gaming Headset',
+      description: 'Durable build quality with custom-tuned drivers.',
+      models: ['HS50 Pro'],
+      features: [{ title: 'Plush Memory Foam', desc: 'Earcups designed for long-lasting comfort.' }]
+    },
+    { 
+      id: 'h6', 
+      name: 'G332 Leatherette', 
+      img: '/images/headsetgaming.jpg', 
+      price: 34.00,
+      brand: 'Logitech',
+      brandLogo: 'LG',
+      brandColor: '#0ea5e9',
+      fullName: 'Logitech G332 Leatherette Sound Headset',
+      description: 'Big 50mm drivers for expansive sound.',
+      models: ['G332'],
+      features: [{ title: 'Flip-to-mute Mic', desc: 'Convenient mic control right on the headset.' }]
+    }
+  ],
+  keyboard: [
+    { 
+      id: 'k1', 
+      name: 'MechaKeys 60%', 
+      img: '/images/keyboardicon.jpg', 
+      price: 49.99,
+      brand: 'MechaKeys',
+      brandLogo: 'MK',
+      brandColor: '#8b5cf6',
+      fullName: 'MechaKeys 60% Mechanical Keyboard',
+      description: 'Compact, responsive, and fully customizable.',
+      models: ['Red Switch', 'Blue Switch', 'Brown Switch'],
+      features: [{ title: 'Hot-swappable', desc: 'Easily change switches without soldering.' }]
+    },
+    { 
+      id: 'k2', 
+      name: 'RK61 Wireless', 
+      img: '/images/keyboardicon.jpg', 
+      price: 54.00,
+      brand: 'Royal Kludge',
+      brandLogo: 'RK',
+      brandColor: '#f43f5e',
+      fullName: 'Royal Kludge RK61 Wireless 60% Keyboard',
+      description: 'The standard for budget wireless mechanical keyboards.',
+      models: ['White', 'Black'],
+      features: [{ title: 'Tri-Mode Connection', desc: 'Bluetooth, 2.4Ghz, and USB-C wired modes.' }]
+    },
+    { 
+      id: 'k3', 
+      name: 'Redragon K552', 
+      img: '/images/keyboardicon.jpg', 
+      price: 39.99,
+      brand: 'Redragon',
+      brandLogo: 'RD',
+      brandColor: '#dc2626',
+      fullName: 'Redragon K552 Kumara Tenkeyless',
+      description: 'Heavy duty, metal backplate design built like a tank.',
+      models: ['RGB', 'Red LED'],
+      features: [{ title: 'Dust Proof Switches', desc: 'Custom mechanical switches designed for longevity.' }]
+    },
+    { 
+      id: 'k4', 
+      name: 'Keychron C1', 
+      img: '/images/keyboardbg.png', 
+      price: 59.00,
+      brand: 'Keychron',
+      brandLogo: 'KC',
+      brandColor: '#64748b',
+      fullName: 'Keychron C1 Mac/Windows TKL Keyboard',
+      description: 'Clean aesthetic, perfect for work and play.',
+      models: ['Gateron Red', 'Gateron Brown'],
+      features: [{ title: 'Mac Compatibility', desc: 'Includes keycaps for both Windows and Mac layouts.' }]
+    },
+    { 
+      id: 'k5', 
+      name: 'MageGee Portable', 
+      img: '/images/keyboardbg.png', 
+      price: 29.99,
+      brand: 'MageGee',
+      brandLogo: 'MG',
+      brandColor: '#0ea5e9',
+      fullName: 'MageGee Portable 75% Mechanical Keyboard',
+      description: 'Extreme budget value with decent typing feel.',
+      models: ['Blue/White', 'Black/Grey'],
+      features: [{ title: 'Ice Blue Backlit', desc: 'Clean, single-color lighting that illuminates keys clearly.' }]
+    },
+    { 
+      id: 'k6', 
+      name: 'EPOMAKER TH80 Pro', 
+      img: '/images/keyboardicon.jpg', 
+      price: 89.00,
+      brand: 'Epomaker',
+      brandLogo: 'EP',
+      brandColor: '#14b8a6',
+      fullName: 'EPOMAKER TH80 Pro 75% Mechanical Keyboard',
+      description: 'Poking into the premium space at a budget price.',
+      models: ['MDA Profile', 'Cherry Profile'],
+      features: [{ title: 'Programmable Knob', desc: 'Volume and media control right at your fingertips.' }]
+    }
+  ],
+  other: [
+    { 
+      id: 'o1', 
+      name: 'RGB Mousepad', 
+      img: '/images/othericon.jpg', 
+      price: 19.99,
+      brand: 'GlowPad',
+      brandLogo: 'GL',
+      brandColor: '#10b981',
+      fullName: 'GlowPad Extended RGB Mousepad',
+      description: 'Smooth glide surface with 14 lighting modes.',
+      models: ['Large', 'XL', 'XXL'],
+      features: [{ title: 'Water-resistant', desc: 'Easy to clean micro-textured surface.' }]
+    },
+    { 
+      id: 'o2', 
+      name: 'Bungee V3', 
+      img: '/images/othericon.jpg', 
+      price: 15.00,
+      brand: 'Razer',
+      brandLogo: 'RZ',
+      brandColor: '#22c55e',
+      fullName: 'Razer Mouse Bungee V3',
+      description: 'Make your wired mouse feel practically wireless.',
+      models: ['V3'],
+      features: [{ title: 'Drag-Free Control', desc: 'Keeps mouse cable elevated and off the desk.' }]
+    },
+    { 
+      id: 'o3', 
+      name: 'StreamCam Mini', 
+      img: '/images/othericon.jpg', 
+      price: 49.99,
+      brand: 'VisionTech',
+      brandLogo: 'VT',
+      brandColor: '#8b5cf6',
+      fullName: 'VisionTech StreamCam Mini 1080p',
+      description: 'Crisp video quality for starting streamers.',
+      models: ['Mini 1080p', 'Mini 2K'],
+      features: [{ title: 'Auto Focus', desc: 'Maintains sharp focus even in low light situations.' }]
+    },
+    { 
+      id: 'o4', 
+      name: 'Acoustic Panels', 
+      img: '/images/othericon.jpg', 
+      price: 24.00,
+      brand: 'SoundDamp',
+      brandLogo: 'SD',
+      brandColor: '#64748b',
+      fullName: 'SoundDamp Hexagon Acoustic Panels (12 Pack)',
+      description: 'Improve mic quality and reduce room echo.',
+      models: ['Black/Grey', 'Blue/White'],
+      features: [{ title: 'Easy Installation', desc: 'Self-adhesive backing makes setup a breeze.' }]
+    },
+    { 
+      id: 'o5', 
+      name: 'Under-Desk Mount', 
+      img: '/images/othericon.jpg', 
+      price: 18.99,
+      brand: 'MountIt',
+      brandLogo: 'MI',
+      brandColor: '#f97316',
+      fullName: 'MountIt Under-Desk PC Mount',
+      description: 'Save desk space and protect your PC from floor dust.',
+      models: ['Standard', 'Heavy Duty'],
+      features: [{ title: 'Adjustable Frame', desc: 'Fits most standard and mid-tower ATX cases.' }]
+    },
+    { 
+      id: 'o6', 
+      name: 'Monitor Light Bar', 
+      img: '/images/othericon.jpg', 
+      price: 35.00,
+      brand: 'Baseus',
+      brandLogo: 'BA',
+      brandColor: '#eab308',
+      fullName: 'Baseus Monitor Light Bar Pro',
+      description: 'Reduce eye strain during late night gaming sessions.',
+      models: ['Pro', 'Basic'],
+      features: [{ title: 'No Screen Glare', desc: 'Asymmetric optical design only illuminates your desk.' }]
+    }
+  ],
+};
+
+const HomeView = ({ setView, setActiveCategory }: { setView: (v: 'home' | 'category') => void, setActiveCategory: (c: string) => void }) => {
+  const handleCategoryClick = (id: string) => {
+    setActiveCategory(id);
+    setView('category');
+  };
+
   return (
     <div className="animate-in fade-in duration-500">
       {/* Hero */}
@@ -156,7 +566,7 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
       <section className="p-8 max-w-[1600px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-4 gap-4 md:h-[600px] lg:h-[800px]">
           {/* PC CASE */}
-          <div className="md:col-span-1 md:row-span-2 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[250px] md:min-h-0">
+          <div className="md:col-span-1 md:row-span-2 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[250px] md:min-h-0" onClick={() => handleCategoryClick('pc')}>
             <img src={categories[0].img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
               <span className="font-heading italic font-bold text-4xl tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{categories[0].name}</span>
@@ -164,7 +574,7 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
           </div>
 
           {/* MOUSE */}
-          <div className="md:col-span-2 md:row-span-3 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[300px] md:min-h-0" onClick={() => setView('category')}>
+          <div className="md:col-span-2 md:row-span-3 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[300px] md:min-h-0" onClick={() => handleCategoryClick('mouse')}>
             <img src={categories[1].img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
               <span className="font-heading italic font-bold text-5xl tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{categories[1].name}</span>
@@ -172,7 +582,7 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
           </div>
 
           {/* CHAIR */}
-          <div className="md:col-span-1 md:row-span-3 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[300px] md:min-h-0">
+          <div className="md:col-span-1 md:row-span-3 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[300px] md:min-h-0" onClick={() => handleCategoryClick('chair')}>
             <img src={categories[2].img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
               <span className="font-heading italic font-bold text-4xl tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{categories[2].name}</span>
@@ -180,7 +590,7 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
           </div>
 
           {/* HEADSET */}
-          <div className="md:col-span-1 md:row-span-2 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[250px] md:min-h-0">
+          <div className="md:col-span-1 md:row-span-2 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[250px] md:min-h-0" onClick={() => handleCategoryClick('headset')}>
             <img src={categories[3].img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
               <span className="font-heading italic font-bold text-4xl tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{categories[3].name}</span>
@@ -188,7 +598,7 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
           </div>
 
           {/* KEYBOARD */}
-          <div className="md:col-span-2 md:row-span-1 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[200px] md:min-h-0">
+          <div className="md:col-span-2 md:row-span-1 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[200px] md:min-h-0" onClick={() => handleCategoryClick('keyboard')}>
             <img src={categories[4].img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
               <span className="font-heading italic font-bold text-5xl tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{categories[4].name}</span>
@@ -196,7 +606,7 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
           </div>
 
           {/* OTHER */}
-          <div className="md:col-span-1 md:row-span-1 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[200px] md:min-h-0">
+          <div className="md:col-span-1 md:row-span-1 relative group overflow-hidden bg-[#1e2128] border border-white/5 rounded-xl cursor-pointer flex items-center justify-center min-h-[200px] md:min-h-0" onClick={() => handleCategoryClick('other')}>
             <img src={categories[5].img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
               <span className="font-heading italic font-bold text-4xl tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{categories[5].name}</span>
@@ -239,17 +649,52 @@ const HomeView = ({ setView }: { setView: (v: 'home' | 'category') => void }) =>
   );
 };
 
-const CategoryView = ({ setSelectedProduct }: { setSelectedProduct: (p: any) => void }) => {
+const CategoryView = ({ categoryId, setSelectedProduct }: { categoryId: string, setSelectedProduct: (p: any) => void }) => {
+  const category = categories.find(c => c.id === categoryId) || categories[0];
+  const products = productsByCategory[categoryId] || [];
+  const hasProducts = products.length > 0;
+  
+  // State for the hero image slideshow
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Setup the slideshow effect
+  useEffect(() => {
+    if (!hasProducts) return;
+
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % products.length);
+    }, 3000); // Change image every 3 seconds
+
+    return () => clearInterval(timer);
+  }, [products, hasProducts]);
+
+  // Determine the image to show. Fallback to category image if no products.
+  const heroImage = hasProducts ? products[currentImageIndex].img : category.img;
+
   return (
     <div className="animate-in fade-in duration-500">
       {/* Hero */}
-      <div className="h-[50vh] relative overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 bg-zinc-800">
-          <img src="/images/mousepageBG.jpg" className="w-full h-full object-cover opacity-60 mix-blend-luminosity" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent" />
+      <div className="h-[50vh] relative overflow-hidden border-b border-white/10 bg-zinc-900">
+        <div className="absolute inset-0">
+          <AnimatePresence>
+            <motion.img 
+              key={heroImage}
+              src={heroImage}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 0.6, scale: 1.15 }}
+              exit={{ opacity: 0 }}
+              transition={{ 
+                opacity: { duration: 1, ease: 'easeInOut' },
+                scale: { duration: 4, ease: 'linear' }
+              }}
+              className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity" 
+              alt={`${category.name} cover`}
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent z-10" />
         </div>
-        <div className="absolute bottom-12 right-12">
-          <h1 className="font-heading italic font-bold text-8xl tracking-tighter drop-shadow-2xl">MOUSE</h1>
+        <div className="absolute bottom-12 right-12 z-20">
+          <h1 className="font-heading italic font-bold text-8xl tracking-tighter drop-shadow-2xl uppercase text-white">{category.name}</h1>
         </div>
       </div>
 
@@ -272,26 +717,33 @@ const CategoryView = ({ setSelectedProduct }: { setSelectedProduct: (p: any) => 
            </div>
         </div>
 
-        <h2 className="font-heading italic font-bold text-6xl text-center mb-20 tracking-tight">BEST BUDGET MOUSE</h2>
+        <h2 className="font-heading italic font-bold text-6xl text-center mb-20 tracking-tight uppercase">BEST BUDGET {category.name}</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
-          {mouseProducts.map((p, i) => (
-            <div key={p.id} className="cursor-pointer group relative" onClick={() => setSelectedProduct(p)}>
-              {/* Decorative connection lines */}
-              <div className="absolute -top-6 left-1/2 w-px h-6 bg-blue-500/30"></div>
-              <div className="absolute top-1/2 -left-6 w-6 h-px bg-blue-500/30"></div>
-              
-              <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 aspect-square flex items-center justify-center relative overflow-hidden border border-white/5 group-hover:border-blue-500/50 transition-colors duration-300 shadow-xl">
-                 <img src={p.img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl" />
-                 
-                 {/* Overlay info */}
-                 <div className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md py-3 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between items-center border-t border-white/10">
-                   <span className="font-heading italic font-bold text-lg tracking-wide">{p.name}</span>
-                   <span className="text-blue-400 font-bold">${p.price}</span>
-                 </div>
+          {products.length > 0 ? (
+            products.map((p, i) => (
+              <div key={p.id} className="cursor-pointer group relative" onClick={() => setSelectedProduct(p)}>
+                {/* Decorative connection lines */}
+                <div className="absolute -top-6 left-1/2 w-px h-6 bg-blue-500/30"></div>
+                <div className="absolute top-1/2 -left-6 w-6 h-px bg-blue-500/30"></div>
+                
+                <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 aspect-square flex items-center justify-center relative overflow-hidden border border-white/5 group-hover:border-blue-500/50 transition-colors duration-300 shadow-xl">
+                   <img src={p.img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl" />
+                   
+                   {/* Overlay info */}
+                   <div className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md py-3 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between items-center border-t border-white/10">
+                     <span className="font-heading italic font-bold text-lg tracking-wide">{p.name}</span>
+                     <span className="text-blue-400 font-bold">${p.price}</span>
+                   </div>
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center flex flex-col items-center justify-center border border-white/10 bg-black/40 backdrop-blur-sm rounded-lg min-h-[300px]">
+              <span className="font-heading italic font-bold text-3xl text-gray-500 tracking-widest uppercase mb-4">MORE PRODUCTS COMING SOON</span>
+              <span className="text-gray-600">We are currently curating the best budget {category.name.toLowerCase()} for you.</span>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
@@ -414,6 +866,7 @@ const ProductModal = ({ product, onClose }: { product: any, onClose: () => void 
 
 export default function App() {
   const [view, setView] = useState<'home' | 'category'>('home');
+  const [activeCategory, setActiveCategory] = useState<string>('mouse');
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
 
   return (
@@ -434,8 +887,8 @@ export default function App() {
 
       {/* Main Content */}
       <main className="pt-24 flex-grow">
-        {view === 'home' && <HomeView setView={setView} />}
-        {view === 'category' && <CategoryView setSelectedProduct={setSelectedProduct} />}
+        {view === 'home' && <HomeView setView={setView} setActiveCategory={setActiveCategory} />}
+        {view === 'category' && <CategoryView categoryId={activeCategory} setSelectedProduct={setSelectedProduct} />}
       </main>
 
       {/* Footer */}
