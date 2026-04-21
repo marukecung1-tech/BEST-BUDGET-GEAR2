@@ -729,23 +729,23 @@ const Footer = () => {
         <h3 className="font-heading italic font-bold text-6xl tracking-tighter drop-shadow-lg">CONTACT</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-6 font-heading italic tracking-wider text-lg">
-          <a href="#" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
+          <a href="https://www.facebook.com/ratchanon.injaidee.2025/?locale=th_TH" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
             <div className="p-2 bg-white/5 rounded group-hover:bg-blue-500/20 transition-colors"><Facebook size={20} /></div>
             THE BEST BUDGET
           </a>
-          <a href="#" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
+          <a href="https://www.facebook.com/ratchanon.injaidee.2025/?locale=th_TH" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
             <div className="p-2 bg-white/5 rounded group-hover:bg-blue-500/20 transition-colors"><Music2 size={20} /></div>
             THE BEST BUDGET
           </a>
-          <a href="#" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
+          <a href="https://www.facebook.com/ratchanon.injaidee.2025/?locale=th_TH" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
             <div className="p-2 bg-white/5 rounded group-hover:bg-blue-500/20 transition-colors"><Twitter size={20} /></div>
             THE BEST BUDGET
           </a>
-          <a href="#" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
+          <a href="https://www.facebook.com/ratchanon.injaidee.2025/?locale=th_TH" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:text-blue-400 transition-colors group">
             <div className="p-2 bg-white/5 rounded group-hover:bg-blue-500/20 transition-colors"><MessageSquare size={20} /></div>
             THE BEST BUDGET
           </a>
-          <a href="#" className="flex items-center gap-4 hover:text-blue-400 transition-colors group md:col-span-2 justify-center mt-4">
+          <a href="https://www.facebook.com/ratchanon.injaidee.2025/?locale=th_TH" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:text-blue-400 transition-colors group md:col-span-2 justify-center mt-4">
             <div className="p-2 bg-white/5 rounded group-hover:bg-blue-500/20 transition-colors"><Mail size={20} /></div>
             THEBESTBUDGET@GMAIL.COM
           </a>
@@ -803,13 +803,16 @@ const ProductModal = ({ product, onClose }: { product: any, onClose: () => void 
             ))}
           </div>
 
-          <button 
+          <a 
+            href="https://shopee.co.th/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-white px-8 py-4 font-bold flex items-center justify-center gap-3 mb-12 w-full md:w-auto rounded transition-colors shadow-lg"
             style={{ backgroundColor: product.brandColor || '#ee4d2d', boxShadow: `0 10px 15px -3px ${product.brandColor || '#ee4d2d'}33` }}
           >
             <ShoppingBag size={20} /> 
             <span className="tracking-wider">BUY ON SHOPEE</span>
-          </button>
+          </a>
 
           <div className="space-y-8 text-sm text-gray-300 leading-relaxed">
             {(product.features || []).map((feature: any, idx: number) => (
